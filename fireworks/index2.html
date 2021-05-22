@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="./style.css">
+  <title>Document</title>
+</head>
+<body>
+  <canvas id="canvas"></canvas>
+</body>
+
+<script>
+  let canvas = document.querySelector("canvas")
+  let ctx = canvas.getContext('2d')
+  let cw = window.innerWidth
+  let ch = window.innerHeight
+  let fireworks = [] //烟花数量
+  let particles = [] // 烟花颗粒
+  let hue = 120 //hsl模式 颜色
+  let mx,my //鼠标位置
+
+  //两数随机数
+  let random = (min, max) => {
+    return Math.random()*(max-min)+min
+  }
+
+  //计算两点之间距离
+  let calculateDistance = (p1x, p1y, p2x, p2y) => {
+    let xDistance = p1x - p2x
+    let yDistance = p1y - p2y
+    return Math.sqrt(Math.pow(xDistance,2) - Math.pow(yDistance, 2))
+  }
+
+  canvas.width = cw
+  canvas.height = ch
+
+  let FireWork = function (sx,sy,tx,ty){
+    this.x = sx
+    this.y = sy
+
+    this.sx = sx
+    this.sy = sy
+    this.tx = tx
+    this.ty = ty
+
+    this.distanceToTarget = calculateDistance(sx,sy,tx,ty)
+
+    this.travelDistance = 0
+
+    this.angel = Math.atan2(tx-sx, ty-sy)
+    this.speed = 2
+    this.acceleration = 1.05
+    this.brightness = random(50, 70)
+    this.tragetRadius = 1
+
+    //烟花升空的过程
+    this.coordinateCount = 3
+    this.coordinates = []
+
+    while (this.coordinateCount--){
+      this.coordinates.push([sx,sy])
+    }
+
+  }
+
+  FireWork.prototype.draw = function (){
+    ctx.beginPath()
+    ctx.moveTo(this.coordinates[this.coordinates.length-1][0],this.coordinates[this.coordinates.length-1][1])
+    ctx.lineTo(this.x, this.y)
+    // ctx.strokeStyle = `hsl(${hue},${100}%,${this.brightness}%)`
+    ctx.strokeStyle = "#FFFFFF"
+    ctx.stroke()
+  }
+
+  FireWork.prototype.update = function (index){
+    this.coordinates.pop()
+    this.coordinates.unshift([this.x,this.y])
+
+    this.speed = this.speed * this.acceleration
+
+    let vx = Math.cos(this.angel)*this.speed
+    let vy = Math.sign(this.angel)*this.speed
+
+    this.travelDistance = calculateDistance(this.sx, this.sy, this.x+vx, this.y+vy)
+
+    if(this.travelDistance >= this.distanceToTarget){
+      fireworks.splice(index,1)
+    }else{
+      this.x += vx
+      this.y += vy
+    }
+
+  }
+
+  let createFirework = function (){
+    for (let i = 0; i < 3; i++){
+      fireworks.push(new FireWork(cw/2,ch/2,random(cw),random(ch)))
+    }
+  }
+
+  createFirework()
+
+  let run = () => {
+    let i = fireworks.length
+    // console.log(fireworks)
+    while (i--){
+      fireworks[i].draw()
+      fireworks[i].update(i)
+    }
+  }
+
+  setInterval(run,1000)
+</script>
+
+</html>

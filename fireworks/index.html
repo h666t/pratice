@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="./style.css">
+  <title>Document</title>
+</head>
+<body>
+  <canvas id="canvas"></canvas>
+</body>
+
+<script>
+  let canvas = document.querySelector("canvas")
+  let ctx = canvas.getContext('2d')
+  let cw = window.innerWidth
+  let ch = window.innerHeight
+  let timer
+  let fireworkList = []
+  let fireworkTimerList = []
+  let random = (min,max) => {
+    return Math.random() * (max - min) + min;
+  }
+
+  canvas.width = window.innerWidth
+  canvas.height = window.innerHeight
+
+  class Firework {
+    constructor(sx,sy,ex,ey,speed) {
+      this.angel = Math.atan2(ey-sy, ex-sx)
+      this.speed = speed
+      this.x = sx
+      this.y = sy
+      this.sx = sx
+      this.sy = sy
+      this.ex = ex
+      this.ey = ey
+      this.distance = this.calcDistance(this.sx,this.sy,this.ex,this.ey)
+      this.lastPositionList = [sx,sy]
+      this.acceleration = 1.05
+    }
+
+    calcDistance(x1,y1,x2,y2){
+      return Math.sqrt( (Math.pow(x1-x2, 2) + Math.pow(y1-y2, 2)) )
+    }
+
+    drawLine(){
+      // ctx.save()
+      ctx.beginPath()
+      ctx.strokeStyle = 'hsl(120,100%,70%)'
+      ctx.moveTo(this.lastPositionList[0],this.lastPositionList[1])
+      ctx.lineTo(this.x,this.y)
+      // console.log(`${this.lastPositionList[0]},${this.lastPositionList[1]}`)
+      // console.log(`${this.x},${this.y}`)
+      ctx.stroke()
+      // ctx.restore()
+    }
+
+    update(index){
+      let vx = Math.cos(this.angel)*(this.speed *= this.acceleration )
+      let vy = Math.sign(this.angel)*(this.speed *= this.acceleration )
+      // console.log(typeof vx)
+      // console.log(typeof vy)
+      if(this.calcDistance(this.sx,this.sy,this.ex,this.ey) > this.calcDistance(this.sx,this.sy,this.x,this.y)){
+        this.lastPositionList = [this.x,this.y]
+        this.x += vx
+        this.y += vy
+      }else{
+        console.log('end')
+        clearInterval(timer)
+        clearInterval(fireworkTimerList[index])
+      }
+    }
+  }
+
+
+
+  for (let i = 1 ; i < 4; i++){
+    console.log(cw)
+    fireworkList.push(new Firework(random(0,cw),ch,random(300,cw-300),100,2))
+  }
+
+  let run = (item,index) => {
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+    ctx.fillRect( 0, 0, cw, ch );
+    item.drawLine()
+    item.update(index)
+  }
+
+  fireworkList.map((item,index)=>{
+    setTimeout(()=>{
+      fireworkTimerList[index] = setInterval(()=>{
+        run(item,index)
+      },33)
+    }, index*1000)
+  })
+
+</script>
+</html>
