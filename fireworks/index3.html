@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<canvas id="canvas"></canvas>
+
+</body>
+
+<script>
+  let canvas = document.querySelector('canvas')
+  let ctx = canvas.getContext('2d')
+  let vw = window.innerWidth
+  let vh = window.innerHeight
+  let fireworkList = []
+
+  canvas.width = vw
+  canvas.height = vh
+  ctx.save()
+  ctx.fillStyle="#ff00000";
+  ctx.rect(0,0,vw,vh);
+  ctx.fill();
+  ctx.restore()
+
+
+  class Firework {
+    constructor(startX,startY,endX,endY,speed) {
+      this.x = startX
+      this.y = startY
+      this.startX = startX
+      this.startY = startY
+      this.endX = endX
+      this.endY = endY
+      this.angel = Math.atan2(this.startY - this.endY, this.startX - this.endX)
+      this.speed = speed
+      this.particle = []
+    }
+
+    initParticle(count,radius){
+      let averageAngle = 360/count
+      console.log(averageAngle)
+      for (let i = 0; i < count; i++){
+        let angel = averageAngle*i
+        let x = this.startX + radius*Math.cos(angel*Math.PI/180)
+        let y = this.startY + radius*Math.sin(angel*Math.PI/180)
+        this.particle.push([x,y])
+      }
+      return this
+    }
+
+    draw(){
+
+      ctx.fillStyle = 'white'
+      this.particle.map((item, index)=>{
+        ctx.save()
+        ctx.beginPath();
+        ctx.fillStyle = 'red'
+        ctx.arc(item[0],item[1],2,0,2*Math.PI);
+        ctx.fill()
+        ctx.restore()
+      })
+      return this
+
+    }
+
+  }
+
+  // ctx.save()
+  // ctx.beginPath();
+  // ctx.fillStyle = 'red'
+  // ctx.arc(item[0],item[1],20,0,2*Math.PI);
+  // ctx.fill()
+  // ctx.restore()
+  // console.log(ctx)
+
+  console.log(new Firework(500, 500,500, 500, 2).initParticle(30,5).draw())
+
+</script>
+</html>
