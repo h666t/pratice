@@ -68,6 +68,11 @@
         this.x += vx
         this.y += vy
       }else{
+        ctx.save()
+        ctx.beginPath();
+        ctx.arc(this.x,this.y,20,0, 2 * Math.PI)
+        ctx.stroke();
+        ctx.restore()
         console.log('end')
         clearInterval(timer)
         clearInterval(fireworkTimerList[index])
@@ -78,7 +83,6 @@
 
 
   for (let i = 1 ; i < 4; i++){
-    console.log(cw)
     fireworkList.push(new Firework(random(0,cw),ch,random(300,cw-300),100,2))
   }
 
