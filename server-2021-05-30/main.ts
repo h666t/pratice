@@ -7,18 +7,21 @@ server.addListener("request",(request: http.IncomingMessage, response: http.Serv
     console.log(request.url);
     console.log(request.method);
     console.log(request.headers);
-    
+
+
+
     let chunkArray = []
-    request.on("data",(chunk)=>{
+    request.on("data",(chunk: Buffer)=>{
         chunkArray.push(chunk)
     })
 
     request.on("end",()=>{
         console.log(Buffer.concat(chunkArray).toString());
+        response.statusCode = 400
         response.write("hello, world\n")
         response.end();
     })
-    
+
 });
 
 server.listen(8888, ()=>{
