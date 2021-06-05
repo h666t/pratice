@@ -1,24 +1,54 @@
 import * as http from "http"
 import * as url from "url";
+import * as path from 'path'
+import * as fs from 'fs'
 const server = http.createServer()
+const frontendResourcePath = path.join(__dirname, 'ui')
 
-interface UrlHash {
-    "/index.html": "首页"
-}
+// interface UrlHash {
+//     "/index.html": "首页"
+// }
+
+// type FileType = 'html' | 'css' | 'js'
 
 server.addListener("request",(request: http.IncomingMessage, response: http.ServerResponse)=>{
+    const fileTypeHash = {
+        "html": "text/html",
+        "css": "text/css",
+        "js": "text/javascript"
+    }
+    
+    let fileName = request.url.substring(1).replace(/(?<=\?).*/g, '').replace(/\?/,'');
+
+    if(request.url === '/'){
+        fileName = 'index.html'
+    }
+
+    const fileType = fileName.replace(/.*(?=\.)/,'').substring(1)
+
+    if(fileTypeHash[fileType]){
+        fs.readFile(path.join(frontendResourcePath, fileName),(error:NodeJS.ErrnoException,data:Buffer)=>{
+            response.setHeader("content-type",fileTypeHash[fileType])
+            response.write(data.toString())
+            response.end()
+        })
+    }
+    
+
+    // response.end()
+
     // console.log(request);
     // console.log(response);
     // console.log(request.httpVersion);
     // console.log(request.url);
     // console.log(request.method);
     // console.log(request.headers);
-    let responseData: string = "空"
+    // let responseData: string = "空"
     // const queryString = new URL(request.url)
     // console.log(request.headers.host);
     // console.log('---');
     // console.log(Date.now());
-    console.log(request.url);
+    // console.log(request.url);
     
     // console.log(new URL('https://' + request.headers.host) );
     
@@ -26,9 +56,9 @@ server.addListener("request",(request: http.IncomingMessage, response: http.Serv
     
     
     // let chunkArray = []
-    const urlHash: UrlHash = {
-        "/index.html":"首页"
-    } 
+    // const urlHash: UrlHash = {
+    //     "/index.html":"首页"
+    // } 
     
     // request.on("data",(chunk: Buffer)=>{
         // chunkArray.push(chunk)
@@ -44,7 +74,7 @@ server.addListener("request",(request: http.IncomingMessage, response: http.Serv
         // response.statusCode = 200
         // response.write(`访问了${responseData}页面`)
         // response.write(queryString)
-        response.end();
+        // response.end();
     // })
 
 });
