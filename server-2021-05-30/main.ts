@@ -2,8 +2,11 @@ import * as http from "http"
 import * as url from "url";
 import * as path from 'path'
 import * as fs from 'fs'
+import { request } from "https";
 const server = http.createServer()
 const frontendResourcePath = path.join(__dirname, 'ui')
+
+
 
 // interface UrlHash {
 //     "/index.html": "首页"
@@ -19,7 +22,6 @@ server.addListener("request",(request: http.IncomingMessage, response: http.Serv
     }
     
     let fileName = request.url.substring(1).replace(/(?<=\?).*/g, '').replace(/\?/,'');
-
     if(request.url === '/'){
         fileName = 'index.html'
     }
@@ -28,7 +30,7 @@ server.addListener("request",(request: http.IncomingMessage, response: http.Serv
 
     if(fileTypeHash[fileType]){
         fs.readFile(path.join(frontendResourcePath, fileName),(error:NodeJS.ErrnoException,data:Buffer)=>{
-            response.setHeader("content-type",fileTypeHash[fileType])
+            response.setHeader("content-type", `${fileTypeHash[fileType]}; charset=utf-8`)
             response.write(data.toString())
             response.end()
         })
