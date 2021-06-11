@@ -6,7 +6,6 @@
   "files": ["dist/**/*.js"],
   "license": "MIT",
   "dependencies": {
-    "@types/utf8": "^3.0.0",
     "commander": "^7.2.0"
   },
   "devDependencies": {
