@@ -1,7 +1,7 @@
 {
   "name": "fy-2021",
   "bin": {"fy": "dist/cli.js"},
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "dist/main.js",
   "files": ["dist/**/*.js"],
   "license": "MIT",

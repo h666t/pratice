@@ -15,9 +15,15 @@ export const translate = (word: string, inputLanguage: 'en' | 'zh') => {
     method: 'GET'
   }
 
-  const request = https.request(options, res => {
-    res.on('data', d => {
-      JSON.parse(d.toString()).trans_result.map((item: {src: string, dst:string})=>{
+  const request = https.request(options, response => {
+    const array: Buffer[] = []
+    response.on('data', (chunk) => {
+      array.push(chunk);
+      
+    })
+    response.on("end", ()=>{
+      const result = JSON.parse(Buffer.concat(array).toString());
+      result.trans_result.map((item: {src: string, dst:string})=>{
         console.log(item.dst + '\n');
       });
     })

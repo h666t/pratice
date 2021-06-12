@@ -1,6 +1,6 @@
 {
   "name": "server-2021-05-30",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "main": "index.js",
   "license": "MIT",
   "devDependencies": {
