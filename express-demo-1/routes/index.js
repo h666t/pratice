@@ -7,7 +7,8 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/xxx', function(req, res, next) {
-  res.send('xxx');
+  res.render('mine/index.ejs',{title: 'mine'})
+  // res.send('xxx');
   // res.render('index', { title: 'Express' });
 });
 
