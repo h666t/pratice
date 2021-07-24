@@ -1,34 +1,97 @@
+// const http = require('http')
+//
+// const server = http.createServer()
+//
+// server.on('request', (request, response)=>{
+//   console.log(request)
+//   response.end('hello world!')
+// })
+//
+// server.listen('3000')
+
 const express = require('express')
 
 const app = express()
 
-app.use((req,res,next)=>{
-  res.write('1')
-  next()
-})
-
-app.use((req,res,next)=>{
-  res.write('2')
-  // next(new Error('未登录'))
+app.use((request,response,next)=>{
   next('未登录')
 })
 
-app.use((req,res,next)=>{
-  res.write('3')
-  next()
+app.use((error,request,response,next)=>{
+  console.log('错误处理1')
+  next(error)
 })
 
-
-
-app.use((err,req,res,next)=>{
-  res.write('err')
-  next(err)
+app.use((error,request,response,next)=>{
+  console.log('错误处理2')
+  response.end()
 })
 
-app.use((err,req,res,next)=>{
-  res.write(err)
-  res.end()
-})
+// app.route('/xxx')
+//   .all((request,response,next)=>{
+//     response.write('all')
+//     next()
+//   })
+//   .get((request,response,next)=>{
+//     if(request.method === 'GET'){
+//       response.write('get')
+//       response.end()
+//     }else{
+//       next()
+//     }
+//   })
+//   .post((request,response,next)=>{
+//     if(request.method === 'POST'){
+//       response.write('post')
+//       response.end()
+//     }else{
+//       next()
+//     }
+//   })
+
+// app.use((request,response,next)=>{
+//   if(request.path === '/'){
+//     response.write('index')
+//   }else if(request.path === '/home'){
+//     response.write('home')
+//   }
+//   response.end()
+// })
+
+// app.use((req,res,next)=>{
+//   console.log('第一个app.use')
+//   res.write('hello world!');
+//   next()
+// })
+//
+// app.use((req,res,next)=>{
+//   console.log('第一个app.use')
+//   res.write('hello world!');
+//   res.end()
+// })
+
+// app.use((req,res,next)=>{
+//   res.write('2')
+//   // next(new Error('未登录'))
+//   next('未登录')
+// })
+//
+// app.use((req,res,next)=>{
+//   res.write('3')
+//   next()
+// })
+//
+//
+//
+// app.use((err,req,res,next)=>{
+//   res.write('err')
+//   next(err)
+// })
+//
+// app.use((err,req,res,next)=>{
+//   res.write(err)
+//   res.end()
+// })
 // app.use((req,res,next)=>{
 //   if(req.path === '/'){
 //     res.write('根目录')
