@@ -1,9 +1,29 @@
-var express = require('express');
-var router = express.Router();
+// var express = require('express');
+// var router = express.Router();
+//
+// /* GET users listing. */
+// router.get('/', function(req, res, next) {
+//   res.send('respond with a resource');
+// });
+//
+// module.exports = router;
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
-});
+const express = require('express')
+const router = express.Router()
 
-module.exports = router;
+router.get('/', (request,response,next) => {
+  response.send('/')
+  response.end()
+})
+
+router.get('/:id', (request,response,next) => {
+  response.send(request.params)
+  response.end()
+})
+
+router.get('/:id/edit', (request,response,next) => {
+  response.send('edit')
+  response.end()
+})
+
+module.exports = router
