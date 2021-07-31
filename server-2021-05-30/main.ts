@@ -9,7 +9,7 @@ const frontendResourcePath = path.join(__dirname, 'ui')
 
 
 // interface UrlHash {
-//     "/index.html": "首页"
+//     "/index.pug": "首页"
 // }
 
 // type FileType = 'html' | 'css' | 'js'
@@ -20,10 +20,10 @@ server.addListener("request",(request: http.IncomingMessage, response: http.Serv
         "css": "text/css",
         "js": "text/javascript"
     }
-    
+
     let fileName = request.url.substring(1).replace(/(?<=\?).*/g, '').replace(/\?/,'');
     if(request.url === '/'){
-        fileName = 'index.html'
+        fileName = 'index.pug'
     }
 
     const fileType = fileName.replace(/.*(?=\.)/,'').substring(1)
@@ -35,7 +35,7 @@ server.addListener("request",(request: http.IncomingMessage, response: http.Serv
             response.end()
         })
     }
-    
+
 
     // response.end()
 
@@ -51,26 +51,26 @@ server.addListener("request",(request: http.IncomingMessage, response: http.Serv
     // console.log('---');
     // console.log(Date.now());
     // console.log(request.url);
-    
+
     // console.log(new URL('https://' + request.headers.host) );
-    
+
     // console.log(new URL(request.headers.referer ));
-    
-    
+
+
     // let chunkArray = []
     // const urlHash: UrlHash = {
-    //     "/index.html":"首页"
-    // } 
-    
+    //     "/index.pug":"首页"
+    // }
+
     // request.on("data",(chunk: Buffer)=>{
         // chunkArray.push(chunk)
     // })
 
     // request.on("end",()=>{
-        
+
         // responseData = urlHash[request.url] || "空"
         // console.log(responseData);
-        
+
         // console.log(Buffer.concat(chunkArray).toString());
         // response.setHeader("data-huang", "l am huang")
         // response.statusCode = 200
