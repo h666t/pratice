@@ -1,11 +1,25 @@
 const express = require('express')
 const app = express()
-app.use(express.urlencoded())
 
-app.use('/', (request,response) => {
-  response.send(request.body)
-  response.end()
+app.param('id', (request, response, next) => {
+  console.log('params')
+  next()
 })
+
+app.use('/:id', (request,response,next) => {
+  response.send('/')
+})
+
+
+
+// app.set('title', 'my-title')
+// app.locals.title = 'myTitle'
+// app.use(express.urlencoded())
+
+// app.use('/', (request,response) => {
+//   response.send(request.app.get('title'))
+//   response.end()
+// })
 
 // app.use(express.static('public'))
 //
