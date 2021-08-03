@@ -1,14 +1,14 @@
 const express = require('express')
 const app = express()
+const blog = express()
+const blogAdmin = express()
 
-app.param('id', (request, response, next) => {
-  console.log('params')
-  next()
-})
+app.use('/blog', blog)
+blog.use('/admin', blogAdmin)
 
-app.use('/:id', (request,response,next) => {
-  response.send('/')
-})
+console.dir(app.path()) // ''
+console.dir(blog.path()) // '/blog'
+console.dir(blogAdmin.path()) // '/blog/admin'
 
 
 
