@@ -1,14 +1,23 @@
 const express = require('express')
 const app = express()
-const blog = express()
-const blogAdmin = express()
 
-app.use('/blog', blog)
-blog.use('/admin', blogAdmin)
+app.set('views', 'views') //设置render使用的文件夹 ，默认views
+app.set('view engine', 'ejs') //设置渲染引擎
 
-console.dir(app.path()) // ''
-console.dir(blog.path()) // '/blog'
-console.dir(blogAdmin.path()) // '/blog/admin'
+app.get('/index', (request,response,next)=>{
+  response.render('index',{title: 'index'})
+  response.end()
+})
+
+// const blog = express()
+// const blogAdmin = express()
+//
+// app.use('/blog', blog)
+// blog.use('/admin', blogAdmin)
+//
+// console.dir(app.path()) // ''
+// console.dir(blog.path()) // '/blog'
+// console.dir(blogAdmin.path()) // '/blog/admin'
 
 
 
