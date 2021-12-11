@@ -13,19 +13,41 @@ const express = require('express')
 
 const app = express()
 
-app.use((request,response,next)=>{
-  next('未登录')
+app.all('/', (request, response, next)=>{
+  response.status(400).send('Bad Request')
+  // console.log(request.param('name'));
+  // response.end()
 })
 
-app.use((error,request,response,next)=>{
-  console.log('错误处理1')
-  next(error)
-})
+// app.route('/events')
+//   .all(function (req, res, next) {
+//     console.log(1)
+//     next()
+//   })
+//   .get(function (req, res, next) {
+//     res.json({})
+//     console.log(2)
+//   })
+//   .post(function (req, res, next) {
+//     // maybe add a new event...
+//     console.log(3)
+//     res.send()
+//   })
 
-app.use((error,request,response,next)=>{
-  console.log('错误处理2')
-  response.end()
-})
+// app.use((request, response, next) => {
+//   next('未登录')
+// })
+//
+// app.use((error, request, response, next) => {
+//   console.log('错误处理1')
+//   console.log(error)
+//   next(error)
+// })
+//
+// app.use((error, request, response, next) => {
+//   console.log('错误处理2')
+//   response.end()
+// })
 
 // app.route('/xxx')
 //   .all((request,response,next)=>{
@@ -101,7 +123,7 @@ app.use((error,request,response,next)=>{
 //   res.end()
 // })
 
-app.listen(3000,()=>{
+app.listen(3000, () => {
   console.log('listen 3000 success!')
 })
 
